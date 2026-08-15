@@ -2,8 +2,8 @@ import { defineTool } from '@deepseek-ai/dsh-tools'
 
 export const name = 'fabric'
 
-// 只要 apply 里用了 ctx.tools 就必须声明 inject(标准 Cordis 硬依赖)
-export const inject = ['tools']
+// 只要 apply 里用了 ctx.tools / ctx.webServer 就必须声明 inject(标准 Cordis 硬依赖)
+export const inject = ['tools', 'webServer']
 
 // ============================================================
 // Fabric — the everything-is-a-plugin primitive
@@ -240,23 +240,20 @@ export function apply(ctx) {
     }
     return { ...graph().census, skills: skillCount, seams: SEAMS }
   }
-  const webServer = ctx.get('webServer')
-  if (webServer) {
-    webServer.register({
-      kind: 'exact',
-      path: '/fabric/census',
-      handler: async (_req, res) => {
-        try {
-          const body = JSON.stringify(await fullCensus())
-          res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' })
-          res.end(body)
-        } catch (e) {
-          res.writeHead(500, { 'content-type': 'application/json; charset=utf-8' })
-          res.end(JSON.stringify({ error: String((e && e.message) || e) }))
-        }
-      },
-    })
-  }
+  ctx.webServer.register({
+    kind: 'exact',
+    path: '/fabric/census',
+    handler: async (_req, res) => {
+      try {
+        const body = JSON.stringify(await fullCensus())
+        res.writeHead(200, { 'content-type': 'application/json; charset=utf-8' })
+        res.end(body)
+      } catch (e) {
+        res.writeHead(500, { 'content-type': 'application/json; charset=utf-8' })
+        res.end(JSON.stringify({ error: String((e && e.message) || e) }))
+      }
+    },
+  })
 
   // ---- 模型工具:fabric_extend / fabric_inspect ----
   ctx.tools.register(defineTool({

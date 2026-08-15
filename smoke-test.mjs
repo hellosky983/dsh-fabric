@@ -9,6 +9,9 @@ const mockCtx = {
     register(def) { calls.tools.push(def && def.name); return makeDisposer('tool') },
     schemas() { return [] },
   },
+  webServer: {
+    register() { calls.webRoute = (calls.webRoute || 0) + 1; return makeDisposer('webRoute') },
+  },
   get(name) {
     if (name === 'systemPrompt') return {
       section(s) { calls.sections.push(s && s.name); return makeDisposer('section') },
