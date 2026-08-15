@@ -37,7 +37,7 @@ DSH 的每一项能力本身就是一个插件：Service、Tool、Skill、Comman
 | 最后验证日期 | 2026-08-15（冒烟测试通过） |
 | 验证方式 | 语法检查 + mock-ctx 冒烟测试（fabric Service 全方法、工具注册、递归注册、代码 kind 从 JSON 拒绝、schema 文档） |
 
-> 未在真实 DSH 进程中做 L4 运行实测（加载 + 工具调用）；已通过静态语法检查与 mock 上下文冒烟测试。若你在别的 DSH 版本上验证过，欢迎反馈。
+> 尚未在真实 DSH 进程中做端到端运行实测（加载 + 工具调用）；已通过静态语法检查与 mock 上下文冒烟测试。若你在别的 DSH 版本上验证过，欢迎反馈。
 
 ---
 
@@ -189,19 +189,3 @@ Fabric **零配置**：无配置项、无环境变量、无敏感项（无 API k
 
 - **许可证**：[MIT](./LICENSE)。
 - **安全报告**：如发现安全问题，请通过 GitHub 的 **private vulnerability reporting**（仓库 `Security` 标签 → `Report a vulnerability`）私下报告，不要公开 issue。
-
----
-
-## 目录收录自检（对照「最低收录条件」）
-
-| 条件 | 状态 |
-| --- | --- |
-| 仓库公开可访问 + `dsh-plugin` topic | ✅ `https://github.com/hellosky983/dsh-fabric`，topics 含 `dsh-plugin`、`deepseek-harness` |
-| 根目录合法 package.json + 非空 name | ✅ `name: "dsh-fabric"` |
-| 提供 main / exports / 明确的 dsh 集成入口 | ✅ `main: index.js`，`exports` 含 `.`、`./client`；`dsh.bundle.patch` + `dsh.client` |
-| README 说明做什么 / 装 / 卸 / 最小示例 | ✅ 见本文各章节 |
-| 运行时依赖显式声明 | ✅ `peerDependencies: { "@deepseek-ai/dsh-tools": "^0.1.0-rc.6" }`（唯一直接 import） |
-| 声明支持的 DSH 版本 / 快照 / commit | ✅ 见 Compatibility：`@deepseek-ai/dsh@0.1.0-rc.6`，2026-08-15 验证 |
-| 许可证 + 无密钥/私密内容 | ✅ MIT；无密钥、无私有仓库内容 |
-
-**命名空间**：本包使用 `dsh-fabric`（无 scope，`hellosky983` 名下），**未占用** `@dsh-external/*`（本仓库无 dsh-external 维护权限），也未占用任何官方保留命名空间。
