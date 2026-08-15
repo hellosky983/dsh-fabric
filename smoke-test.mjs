@@ -27,6 +27,7 @@ const mockCtx = {
     if (name === 'webServer') return { register() { calls.webRoute = (calls.webRoute || 0) + 1; return makeDisposer('webRoute') } }
     if (name === 'settings') return { register() { calls.settings = (calls.settings || 0) + 1; return makeDisposer('settings') } }
     if (name === 'sessionProjections') return { register() { calls.projection = (calls.projection || 0) + 1; return makeDisposer('projection') } }
+    if (name === 'foundry') return { registerBlueprint() { calls.blueprint = (calls.blueprint || 0) + 1; return makeDisposer('blueprint') } }
     return undefined
   },
   provide(name, value) { calls.provided[name] = value; return makeDisposer('provide') },
@@ -76,6 +77,12 @@ console.log('reject code-from-json:', JSON.stringify(bad))
 const s = fabric.schema()
 console.log('schema kinds:', s.kinds.length, 'seams:', s.seams.length)
 
-const ok = fabric && r1[0].ok === true && r2.every((r) => r.ok) && bad[0].ok === false && calls.effects === 1
+// 6. blueprint 接缝(foundry mock):带 render 成功,缺 render 拒绝
+const bp = fabric.register({ kind: 'blueprint', id: 'bp-1', name: 'BP', category: 'demo', description: 'd', whenToUse: 'w', params: [], render: () => ({ host: '', client: '' }) })
+console.log('register blueprint:', JSON.stringify(bp))
+const bpBad = fabric.register({ kind: 'blueprint', id: 'bp-2', name: 'Bad', render: null })
+console.log('reject blueprint-no-render:', JSON.stringify(bpBad))
+
+const ok = fabric && r1[0].ok === true && r2.every((r) => r.ok) && bad[0].ok === false && bp[0].ok === true && bpBad[0].ok === false && calls.effects === 1
 console.log(ok ? '\nSMOKE TEST PASSED' : '\nSMOKE TEST FAILED')
 process.exit(ok ? 0 : 1)

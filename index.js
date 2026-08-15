@@ -34,6 +34,7 @@ const SEAMS = [
   'settingsNamespace',
   'projection',
   'service',
+  'blueprint',
 ]
 
 export function apply(ctx) {
@@ -149,6 +150,22 @@ export function apply(ctx) {
       if (!projections) throw new Error('sessionProjections service unavailable')
       return projections.register(def.definition)
     }
+    if (kind === 'blueprint') {
+      const foundry = ctx.get('foundry')
+      if (!foundry) throw new Error('foundry service unavailable (install dsh-foundry)')
+      if (typeof def.render !== 'function') {
+        throw new Error("kind 'blueprint' carries a render function and cannot come from JSON; register it from plugin code")
+      }
+      return foundry.registerBlueprint({
+        id: def.id,
+        name: def.name,
+        category: def.category,
+        description: def.description,
+        whenToUse: def.whenToUse,
+        params: def.params,
+        render: def.render,
+      })
+    }
     throw new Error('unsupported kind: ' + kind + ' (supported: ' + SEAMS.join(', ') + ')')
   }
 
@@ -208,6 +225,7 @@ export function apply(ctx) {
       { kind: 'webRoute', needsCode: true, shape: { route: { kind: 'exact | prefix', path: 'string', handler: '(req, res) => void' } } },
       { kind: 'settingsNamespace', needsCode: true, shape: { ns: 'SettingsNamespace (branded)', schema: 'schemastery z schema', options: '{ base?, applies?, validate? }?' } },
       { kind: 'projection', needsCode: true, shape: { definition: 'ProjectionDefinition (6 required fields; schema is zod, apply reducer is sync pure JSON)' } },
+      { kind: 'blueprint', needsCode: true, shape: { id: 'kebab-case', name: 'string', category: 'string', description: 'string', whenToUse: 'string', params: 'BlueprintParam[]', render: '(params) => { host?, client?, notes }' } },
     ],
     seams: SEAMS,
     note: 'Kinds marked needsCode:true carry executable functions and must be registered through the fabric Service by plugin code, not through the JSON-only fabric_extend tool. Note: settingsNamespace is fiber-scoped and returns no public disposer, so fabric.remove() on it is a no-op; it is cleaned up when the Fabric plugin stops.',

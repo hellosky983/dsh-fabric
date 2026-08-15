@@ -116,7 +116,7 @@ fabric.graph()                 // -> { census: { tools, fabricExtensions }, seam
 fabric.schema()                // -> DSL 文档
 ```
 
-### 支持的接缝（13 种）
+### 支持的接缝（14 种）
 
 | kind | needsCode | 用途 |
 | --- | --- | --- |
@@ -132,6 +132,7 @@ fabric.schema()                // -> DSL 文档
 | `webRoute` | ✅ | 注册 Web 路由（`route`） |
 | `settingsNamespace` | ✅ | 注册设置命名空间（`ns` / `schema` / `options`） |
 | `projection` | ✅ | 注册会话投影（`definition`） |
+| `blueprint` | ✅ | 注册插件蓝图到 Foundry（`id`/`name`/`category`/`description`/`whenToUse`/`params`/`render`，需 `dsh-foundry`） |
 | `service` | ✅ | （`ctx.provide` 已内置，用于发布 Service） |
 
 > 带 ✅ 的 kind 携带可执行代码，必须由插件代码通过 `ctx.get('fabric').register(...)` 注册；带 ❌ 的 kind 是纯声明式，模型可直接用 `fabric_extend` 工具注册。精确字段契约见 `fabric_inspect({ detail: 'schema' })`。
