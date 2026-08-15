@@ -210,7 +210,7 @@ export function apply(ctx) {
       { kind: 'projection', needsCode: true, shape: { definition: 'ProjectionDefinition (6 required fields; schema is zod, apply reducer is sync pure JSON)' } },
     ],
     seams: SEAMS,
-    note: 'Kinds marked needsCode:true carry executable functions and must be registered through the fabric Service by plugin code, not through the JSON-only fabric_extend tool.',
+    note: 'Kinds marked needsCode:true carry executable functions and must be registered through the fabric Service by plugin code, not through the JSON-only fabric_extend tool. Note: settingsNamespace is fiber-scoped and returns no public disposer, so fabric.remove() on it is a no-op; it is cleaned up when the Fabric plugin stops.',
   })
 
   const graph = () => {
