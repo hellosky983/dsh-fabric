@@ -1,0 +1,44 @@
+{
+  "name": "dsh-fabric",
+  "version": "0.1.0",
+  "description": "Fabric — the everything-is-a-plugin primitive for DeepSeek Harness (dsh). Unifies every DSH extensibility seam (tool / skill / command / prompt section / context / variable / event listener / llm adapter / subagent provider / web route / settings namespace / projection / service) behind one declarative DSL, published as a runtime Service plus model-facing tools, so extending the runtime becomes a runtime primitive.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "fabric",
+    "plugin",
+    "extensibility",
+    "meta-plugin",
+    "dsl"
+  ],
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots"
+      ]
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-tools": "^0.1.0-rc.6"
+  }
+}
