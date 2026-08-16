@@ -1,5 +1,8 @@
 # dsh-fabric
 
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com)
+
+
 > **Fabric — the everything-is-a-plugin primitive** for [DeepSeek Harness](https://github.com) (`dsh`).
 
 DSH 的每一项能力本身就是一个插件：Service、Tool、Skill、Command、Prompt Section、Event Listener、LLM Adapter、Subagent Provider、Web Route、Settings Namespace、Projection……但此前「制造插件」这件事并不在运行时里——它只能靠开发者用特殊工具来完成。
